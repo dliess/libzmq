@@ -47,7 +47,7 @@ class msg_t
         msg_free_fn *ffn;
         void *hint;
         zmq::atomic_counter_t refcnt;
-    };
+    } __attribute__((aligned(64)));
 
     //  Message flags.
     enum
