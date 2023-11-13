@@ -248,19 +248,20 @@ ZMQ_EXPORT int zmq_ctx_destroy (void *context_);
  * alignment and raise sigbus on violations. Make sure applications allocate
  * zmq_msg_t on addresses aligned on a pointer-size boundary to avoid this issue.
  */
+#define S_ZMQ_MSG_SIZE 128
 typedef struct zmq_msg_t
 {
 #if defined(_MSC_VER) && (defined(_M_X64) || defined(_M_ARM64))
-    __declspec(align (8)) unsigned char _[64];
+    __declspec(align (8)) unsigned char _[S_ZMQ_MSG_SIZE];
 #elif defined(_MSC_VER)                                                        \
   && (defined(_M_IX86) || defined(_M_ARM_ARMV7VE) || defined(_M_ARM))
-    __declspec(align (4)) unsigned char _[64];
+    __declspec(align (4)) unsigned char _[S_ZMQ_MSG_SIZE];
 #elif defined(__GNUC__) || defined(__INTEL_COMPILER)                           \
   || (defined(__SUNPRO_C) && __SUNPRO_C >= 0x590)                              \
   || (defined(__SUNPRO_CC) && __SUNPRO_CC >= 0x590)
-    unsigned char _[64] __attribute__ ((aligned (sizeof (void *))));
+    unsigned char _[S_ZMQ_MSG_SIZE] __attribute__ ((aligned (sizeof (void *))));
 #else
-    unsigned char _[64];
+    unsigned char _[S_ZMQ_MSG_SIZE];
 #endif
 } zmq_msg_t;
 

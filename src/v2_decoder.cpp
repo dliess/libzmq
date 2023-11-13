@@ -115,6 +115,7 @@ int zmq::v2_decoder_t::size_ready (uint64_t msg_size_,
 
     shared_message_memory_allocator &allocator = get_allocator ();
     if (unlikely (!_zero_copy
+                  || (reinterpret_cast<uintptr_t> (read_pos_) % sizeof (void *) != 0)
                   || msg_size_ > static_cast<size_t> (
                        allocator.data () + allocator.size () - read_pos_))) {
         // a new message has started, but the size would exceed the pre-allocated arena
